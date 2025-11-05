@@ -4,11 +4,11 @@ project(lazyfoo CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(SDL2_DIR "C:/mingw_dev_lib/SDL2-2.32.10/x86_64-w64-mingw32/lib/cmake/SDL2")
-set(SDL2_image_DIR "C:/mingw_dev_lib/SDL2_image-2.8.8/x86_64-w64-mingw32/lib/cmake/SDL2_image")
-set(SDL2_ttf_DIR "C:/mingw_dev_lib/SDL2_ttf-2.24.0/x86_64-w64-mingw32/lib/cmake/SDL2_ttf")
-set(SDL2_mixer_DIR "C:/mingw_dev_lib/SDL2_mixer-2.8.1/x86_64-w64-mingw32/lib/cmake/SDL2_mixer")
-
+#
+# No hard-coded paths needed!
+# find_package will automatically find the libraries
+# in Homebrew's location (/opt/homebrew).
+#
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
@@ -16,6 +16,7 @@ find_package(SDL2_mixer REQUIRED)
 
 add_executable(lazyfoo "lessons/21_sound_effects_and_music.cpp")
 
+# This part is still correct
 target_link_libraries(lazyfoo PRIVATE
         SDL2::SDL2main
         SDL2::SDL2
@@ -24,21 +25,13 @@ target_link_libraries(lazyfoo PRIVATE
         SDL2_mixer::SDL2_mixer
 )
 
-set(DLL_FILES
-        "C:/mingw_dev_lib/SDL2-2.32.10/x86_64-w64-mingw32/bin/SDL2.dll"
-        "C:/mingw_dev_lib/SDL2_image-2.8.8/x86_64-w64-mingw32/bin/SDL2_image.dll"
-        "C:/mingw_dev_lib/SDL2_ttf-2.24.0/x86_64-w64-mingw32/bin/SDL2_ttf.dll"
-        "C:/mingw_dev_lib/SDL2_mixer-2.8.1/x86_64-w64-mingw32/bin/SDL2_mixer.dll"
-)
+#
+# The .dll copying section is removed.
+# On macOS, the dynamic linker automatically knows
+# where to find Homebrew's .dylib files.
+#
 
-foreach(dll_file IN LISTS DLL_FILES)
-    add_custom_command(TARGET lazyfoo POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${dll_file}"
-            "$<TARGET_FILE_DIR:lazyfoo>"
-    )
-endforeach()
-
+# This resource copying logic is perfect, leave it as-is!
 file(GLOB RESOURCE_FILES "media/*")
 set(RESOURCE_FILES_BINDIR)
 
