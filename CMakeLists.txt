@@ -4,19 +4,13 @@ project(lazyfoo CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-#
-# No hard-coded paths needed!
-# find_package will automatically find the libraries
-# in Homebrew's location (/opt/homebrew).
-#
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 
-add_executable(lazyfoo "lessons/21_sound_effects_and_music.cpp")
+add_executable(lazyfoo "lessons/35_window_events.cpp")
 
-# This part is still correct
 target_link_libraries(lazyfoo PRIVATE
         SDL2::SDL2main
         SDL2::SDL2
@@ -25,13 +19,6 @@ target_link_libraries(lazyfoo PRIVATE
         SDL2_mixer::SDL2_mixer
 )
 
-#
-# The .dll copying section is removed.
-# On macOS, the dynamic linker automatically knows
-# where to find Homebrew's .dylib files.
-#
-
-# This resource copying logic is perfect, leave it as-is!
 file(GLOB RESOURCE_FILES "media/*")
 set(RESOURCE_FILES_BINDIR)
 
